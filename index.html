@@ -1,32 +1,20 @@
 <!DOCTYPE html>
- <html lang="pt-BR">
-     <head> 
-        <meta charset="UTF-8">
-         <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-         <title>Idivert</title> 
-         <link rel="stylesheet" href="style.css"> 
-        </head> 
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IDIVERT</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
-     <h1>Idivert</h1>
-      <p id="msg">v.02</p>
-      <button onclick = "MostrarFrase()">gerar palavra</button>
-      <script>
-        let Frases = ["bom dia", "boa tarde", "boa noite"]
-let FrasesCopiadas = [...Frases]
-function GeradorMensagem(){
-    if (Frases.lenght==0){
-        Frases=[...FrasesCopiadas];
-    }
-function MostrarFrase(){
-    Document.queryselector("msg").textcontent = FraseGerada;
-}
-    let IndiceGerado = math.floor(math.random()*(Frases.lenght))
-let FraseGerada = Frases [IndiceGerado];
-console.log (FraseGerada)
 
-Frases.splice (IndiceGerado,1)
-}
-GeradorMensagem();
-      </script> 
-    </body> 
-    </html>
+    <div class="container">
+        <h1>IDIVERT</h1>
+        <p id="mensagem-display">Clique no botão para melhorar seu dia!</p>
+      <p>Este app foi criado pensandopara que você não tenha uma rotina chata e monótona, aproveite de sugestões para fugir da rotina e fazer coisas difrentes!</p>
+        <button id="btn-gerar">Sair da Rotina</button>
+    </div>
+
+    <script src="apps.js"></script>
+</body>
+</html>
