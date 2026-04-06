@@ -5,14 +5,157 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IDIVERT</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Estilos adicionais para as novas telas (mantendo as cores originais) */
+        .tela {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+        .tela.active {
+            display: flex;
+        }
+
+        .form-group {
+            width: 100%;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .btn {
+            background: linear-gradient(to right, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(118, 75, 162, 0.4);
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(118, 75, 162, 0.6);
+        }
+
+        .estrelas {
+            font-size: 2.5rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .estrela {
+            color: #ddd;
+            transition: color 0.2s;
+        }
+
+        .estrela.ativa {
+            color: #f1c40f;
+        }
+
+        .avaliacao-container {
+            margin-top: 30px;
+        }
+    </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>IDIVERT</h1>
-        <p id="mensagem-display">Clique no botão para melhorar seu dia!</p>
-      <p>Este app foi criado pensandopara que você não tenha uma rotina chata e monótona, aproveite de sugestões para fugir da rotina e fazer coisas difrentes!</p>
-        <button id="btn-gerar">Sair da Rotina</button>
+
+        <!-- TELA 1: CADASTRO -->
+        <div id="tela-cadastro" class="tela active">
+            <h1>IDIVERT</h1>
+            <h2 style="color: #764ba2; margin: 20px 0;">Bem-vindo! Vamos te conhecer melhor</h2>
+            
+            <div class="form-group">
+                <label for="nome">Seu nome</label>
+                <input type="text" id="nome" placeholder="Digite seu nome" required>
+            </div>
+
+            <div class="form-group">
+                <label for="idade">Sua idade</label>
+                <input type="number" id="idade" placeholder="Digite sua idade" min="10" max="120" required>
+            </div>
+
+            <div class="form-group">
+                <label for="motivo">Por que você buscou o IDIVERT?</label>
+                <textarea id="motivo" rows="3" placeholder="Ex: Quero sair da rotina, estou entediado..." required></textarea>
+            </div>
+
+            <button class="btn" onclick="cadastrarUsuario()">Continuar</button>
+        </div>
+
+        <!-- TELA 2: PRINCIPAL -->
+        <div id="tela-principal" class="tela">
+            <h1>IDIVERT</h1>
+            <p id="saudacao" style="font-size: 1.3rem; margin-bottom: 10px; color: #764ba2;"></p>
+            <p id="mensagem-display">Clique no botão para melhorar seu dia!</p>
+            
+            <p>Este app foi criado para que você não tenha uma rotina chata e monótona. Aproveite as sugestões para fugir da rotina e fazer coisas diferentes!</p>
+
+            <button id="btn-gerar" class="btn">Sair da Rotina</button>
+
+            <button onclick="mostrarAvaliacao()" style="margin-top: 20px; background: none; border: 2px solid #764ba2; color: #764ba2;" class="btn">
+                Avaliar o App
+            </button>
+        </div>
+
+        <!-- TELA 3: AVALIAÇÃO -->
+        <div id="tela-avaliacao" class="tela">
+            <h1>IDIVERT</h1>
+            <h2 style="color: #764ba2;">Como o IDIVERT te ajudou hoje?</h2>
+            
+            <div class="form-group">
+                <label for="comentario">Sua opinião (opcional)</label>
+                <textarea id="comentario" rows="4" placeholder="A mensagem me ajudou a..."></textarea>
+            </div>
+
+            <div class="avaliacao-container">
+                <p style="margin-bottom: 10px; color: #764ba2;">Dê uma nota para o app:</p>
+                <div class="estrelas" id="estrelas">
+                    <span class="estrela" data-valor="1">★</span>
+                    <span class="estrela" data-valor="2">★</span>
+                    <span class="estrela" data-valor="3">★</span>
+                    <span class="estrela" data-valor="4">★</span>
+                    <span class="estrela" data-valor="5">★</span>
+                </div>
+            </div>
+
+            <button class="btn" onclick="enviarAvaliacao()">Enviar Avaliação</button>
+            <button onclick="voltarParaPrincipal()" style="margin-top: 15px; background: #f0f0f0; color: #666;" class="btn">Voltar</button>
+        </div>
+
     </div>
 
     <script src="apps.js"></script>
