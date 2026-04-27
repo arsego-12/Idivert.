@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IDIVERT</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+  
+        .tela {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+        .tela.active {
+            display: flex;
+        }
+
+        .form-group {
+            width: 100%;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .btn {
+            background: linear-gradient(to right, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(118, 75, 162, 0.4);
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(118, 75, 162, 0.6);
+        }
+
+        .estrelas {
+            font-size: 2.5rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .estrela {
+            color: #ddd;
+            transition: color 0.2s;
+        }
+
+        .estrela.ativa {
+            color: #f1c40f;
+        }
+
+        .avaliacao-container {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- TELA 1: CADASTRO -->
+        <div id="tela-cadastro" class="tela active">
+            <h1>IDIVERT</h1>
+            <h2 style="color: #764ba2; margin: 20px 0;">Bem-vindo! Vamos te conhecer melhor</h2>
+            
+            <div class="form-group">
+                <label for="nome">Seu nome</label>
+                <input type="text" id="nome" placeholder="Digite seu nome" required>
+            </div>
+
+            <div class="form-group">
+                <label for="idade">Sua idade</label>
+                <input type="number" id="idade" placeholder="Digite sua idade" min="10" max="120" required>
+            </div>
+
+            <div class="form-group">
+                <label for="motivo">Por que você buscou o IDIVERT?</label>
+                <textarea id="motivo" rows="3" placeholder="Ex: Quero sair da rotina, estou entediado..." required></textarea>
+            </div>
+
+            <button class="btn" onclick="cadastrarUsuario()">Continuar</button>
+        </div>
+
+        <!-- TELA 2: PRINCIPAL -->
+        <div id="tela-principal" class="tela">
+            <h1>IDIVERT</h1>
+            <p id="saudacao" style="font-size: 1.3rem; margin-bottom: 10px; color: #764ba2;"></p>
+            <p id="mensagem-display">Clique no botão para melhorar seu dia!</p>
+            
+            <p>Este app foi criado para que você não tenha uma rotina chata e monótona. Aproveite as sugestões para fugir da rotina e fazer coisas diferentes!</p>
+
+            <button id="btn-gerar" class="btn">Sair da Rotina</button>
+
+            <button onclick="mostrarAvaliacao()" style="margin-top: 20px; background: none; border: 2px solid #764ba2; color: #764ba2;" class="btn">
+                Avaliar o App
+            </button>
+        </div>
+
+        <!-- TELA 3: AVALIAÇÃO -->
+        <div id="tela-avaliacao" class="tela">
+            <h1>IDIVERT</h1>
+            <h2 style="color: #764ba2;">Como o IDIVERT te ajudou hoje?</h2>
+            
+            <div class="form-group">
+                <label for="comentario">Sua opinião (opcional)</label>
+                <textarea id="comentario" rows="4" placeholder="A mensagem me ajudou a..."></textarea>
+            </div>
+
+            <div class="avaliacao-container">
+                <p style="margin-bottom: 10px; color: #764ba2;">Dê uma nota para o app:</p>
+                <div class="estrelas" id="estrelas">
+                    <span class="estrela" data-valor="1">★</span>
+                    <span class="estrela" data-valor="2">★</span>
+                    <span class="estrela" data-valor="3">★</span>
+                    <span class="estrela" data-valor="4">★</span>
+                    <span class="estrela" data-valor="5">★</span>
+                </div>
+            </div>
+
+            <button class="btn" onclick="enviarAvaliacao()">Enviar Avaliação</button>
+            <button onclick="voltarParaPrincipal()" style="margin-top: 15px; background: #f0f0f0; color: #666;" class="btn">Voltar</button>
+        </div>
+
+    </div>
+
+    <script src="apps.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+let usuario = {};
+
+
+const ideias = [
+    "Tente cozinhar uma receita que você nunca fez antes.",
+    "Faça um caminho diferente para o trabalho ou escola hoje.",
+    "Assista a um documentário sobre um assunto que você desconhece.",
+    "Leia 10 páginas de um livro que está parado na estante.",
+    "Faça uma caminhada de 15 minutos sem usar o celular.",
+    "Escreva uma carta ou mensagem carinhosa para um amigo antigo.",
+    "Aprenda 5 palavras novas em outro idioma.",
+    "Reorganize uma gaveta ou prateleira que está bagunçada.",
+    "Medite por 5 minutos focando apenas na sua respiração.",
+    "Desenhe algo simples, mesmo que você ache que não sabe desenhar.",
+    "Dance por 10 minutos ao som da sua música favorita.",
+    "Pratique um hobby antigo que você não faz há um tempo.",
+    "Experimente uma nova receita de sobremesa.",
+    "Assista a um filme ou série de um gênero que você normalmente não assiste.",
+    "Desconecte-se das redes sociais por pelo menos uma hora.",
+    "Saia para jantar em um restaurante novo",
+    "Faça uma lista de 5 coisas pelas quais você é grato hoje.",
+];
+
+let notaAvaliacao = 0;
+
+function cadastrarUsuario() {
+    const nome = document.getElementById('nome').value.trim();
+    const idade = document.getElementById('idade').value;
+    const motivo = document.getElementById('motivo').value.trim();
+
+    if (!nome || !idade || !motivo) {
+        alert("Por favor, preencha todos os campos!");
+        return;
+    }
+
+    usuario = { nome, idade: parseInt(idade), motivo };
+
+    document.getElementById('tela-cadastro').classList.remove('active');
+    document.getElementById('tela-principal').classList.add('active');
+
+    document.getElementById('saudacao').textContent = `Olá, ${nome}! `;
+}
+
+const botao = document.getElementById('btn-gerar');
+const display = document.getElementById('mensagem-display');
+
+botao.addEventListener('click', () => {
+    const indiceAleatorio = Math.floor(Math.random() * ideias.length);
+    display.textContent = ideias[indiceAleatorio];
+});
+
+function mostrarAvaliacao() {
+    document.getElementById('tela-principal').classList.remove('active');
+    document.getElementById('tela-avaliacao').classList.add('active');
+    
+    
+    notaAvaliacao = 0;
+    atualizarEstrelas();
+}
+
+function atualizarEstrelas() {
+    const estrelas = document.querySelectorAll('.estrela');
+    estrelas.forEach(estrela => {
+        estrela.classList.toggle('ativa', parseInt(estrela.dataset.valor) <= notaAvaliacao);
+    });
+}
+
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('estrela')) {
+        notaAvaliacao = parseInt(e.target.dataset.valor);
+        atualizarEstrelas();
+    }
+});
+
+function enviarAvaliacao() {
+    const comentario = document.getElementById('comentario').value.trim();
+
+    if (notaAvaliacao === 0) {
+        alert("Por favor, dê uma nota de 1 a 5 estrelas.");
+        return;
+    }
+
+    console.log("Avaliação recebida:", {
+        nome: usuario.nome,
+        nota: notaAvaliacao,
+        comentario: comentario || "Sem comentário"
+    });
+
+    alert(`Obrigado, ${usuario.nome}! Sua avaliação de ${notaAvaliacao} estrelas foi registrada com sucesso! `);
+    
+    voltarParaPrincipal();
+}
+
+function voltarParaPrincipal() {
+    document.getElementById('tela-avaliacao').classList.remove('active');
+    document.getElementById('tela-principal').classList.add('active');
+}
+
+
+
+
+
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #fff;
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 450px;
+    width: 90%;
+    color: #333;
+}
+
+
+h1 {
+    font-size: 2.5rem;
+    color: #764ba2;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+    font-weight: 800;
+}
+
+#mensagem-display {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #4a4a4a;
+    p {
+        font-size: 0.95rem;
+        line-height: 1.5;
+        color: #666;
+        margin-bottom: 30px;
+    }
+    
+    #btn-gerar {
+        background: linear-gradient(to right, #667eea, #764ba2);
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        border-radius: 50px;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(118, 75, 162, 0.4);
+        transition: all 0.3s ease;
+    }
+    
+    #btn-gerar:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(118, 75, 162, 0.6);
+        filter: brightness(1.1);
+    }
+    
+    #btn-gerar:active {
+        transform: scale(0.98);
+    }    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border-left: 5px solid #667eea;
+}
+
+p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+#btn-gerar {
+    background: linear-gradient(to right, #667eea, #764ba2);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(118, 75, 162, 0.4);
+    transition: all 0.3s ease;
+}
+
+#btn-gerar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(118, 75, 162, 0.6);
+    filter: brightness(1.1);
+}
+
+#btn-gerar:active {
+    transform: scale(0.98);
+}
